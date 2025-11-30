@@ -7,21 +7,36 @@
     <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
-        android:gravity="center_horizontal"
         android:background="#FDF4FF"
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textTripsTitle"
-            android:text="My Trips"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:layout_marginTop="45dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="#2B2B2B"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            <TextView
+                android:id="@+id/textTripsTitle"
+                android:text="My Trips"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -37,10 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <View
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTrips"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonAddTrip"
