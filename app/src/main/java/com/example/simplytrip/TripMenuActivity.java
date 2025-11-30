@@ -35,7 +35,15 @@ public class TripMenuActivity extends AppCompatActivity {
         recyclerTrips = findViewById(R.id.recyclerTrips);
 
         trips = TripRepository.getInstance().getTrips();
-        tripAdapter = new TripAdapter(trips);
+
+        tripAdapter = new TripAdapter(trips, new TripAdapter.OnTripClickListener() {
+            @Override
+            public void onTripClick(int position) {
+                Intent intent = new Intent(TripMenuActivity.this, TripDetailsActivity.class);
+                intent.putExtra("trip_index", position);
+                startActivity(intent);
+            }
+        });
 
         recyclerTrips.setLayoutManager(new LinearLayoutManager(this));
         recyclerTrips.setAdapter(tripAdapter);

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#5E35B1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="16dp"
         android:background="#FDF4FF"
-        android:layout_marginTop="40dp"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,58 +17,60 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
 
             <ImageButton
                 android:id="@+id/buttonBack"
                 android:background="@android:color/transparent"
                 android:padding="8dp"
                 android:src="@drawable/ic_arrow_back"
-                android:tint="#2B2B2B"
                 android:layout_width="48dp"
-                android:layout_height="48dp" />
+                android:layout_height="48dp"
+                app:tint="#2B2B2B" />
 
             <TextView
                 android:id="@+id/textTripsTitle"
                 android:text="My Trips"
-                android:textSize="48sp"
+                android:textSize="42sp"
                 android:textStyle="bold"
                 android:layout_marginStart="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textNoTrips"
             android:text="No trips yet.\nPress the button below to create your first trip."
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:gravity="center"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTrips"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="10dp"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonAddTrip"
             android:text="Add New Trip"
-            android:textSize="26sp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:layout_marginBottom="200dp"
+            android:textSize="24sp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:background="#5E35B1"
+            android:textColor="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

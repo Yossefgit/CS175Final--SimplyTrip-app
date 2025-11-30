@@ -13,6 +13,12 @@
         android:theme="@style/Theme.SimplyTrip">
 
         <activity
+            android:name=".AddActivityActivity" />
+
+        <activity
+            android:name=".TripDetailsActivity" />
+
+        <activity
             android:name=".AddTripActivity" />
 
         <activity

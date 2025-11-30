@@ -14,6 +14,7 @@ import androidx.core.util.Pair;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,9 +31,13 @@ public class AddTripActivity extends AppCompatActivity {
     private Button buttonCancelTrip;
     private TextView textTripLength;
     private ImageButton buttonBackAddTrip;
+    private TextView textAddTripTitle;
 
     private long selectedStartDate = -1L;
     private long selectedEndDate = -1L;
+
+    private boolean isEditMode = false;
+    private int editTripIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,7 @@ public class AddTripActivity extends AppCompatActivity {
         buttonCancelTrip = findViewById(R.id.buttonCancelTrip);
         textTripLength = findViewById(R.id.textTripLength);
         buttonBackAddTrip = findViewById(R.id.buttonBackAddTrip);
+        textAddTripTitle = findViewById(R.id.textAddTripTitle);
 
         buttonSelectDates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,26 +82,60 @@ public class AddTripActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if (getIntent() != null && getIntent().hasExtra("trip_index")) {
+            int index = getIntent().getIntExtra("trip_index", -1);
+            if (index >= 0 && index < TripRepository.getInstance().getTrips().size()) {
+                isEditMode = true;
+                editTripIndex = index;
+                Trip trip = TripRepository.getInstance().getTrips().get(editTripIndex);
+                prefillTrip(trip);
+            }
+        }
+    }
+
+    private void prefillTrip(Trip trip) {
+        textAddTripTitle.setText("Edit Trip");
+        buttonSaveTrip.setText("Save Changes");
+
+        editTripName.setText(trip.getName());
+        editNotes.setText(trip.getNotes());
+        editBudget.setText(trip.getBudget());
+        editTravelers.setText(trip.getTravelers());
+
+        String startDate = trip.getStartDate();
+        String endDate = trip.getEndDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date start = sdf.parse(startDate);
+            Date end = sdf.parse(endDate);
+            if (start != null && end != null) {
+                selectedStartDate = start.getTime();
+                selectedEndDate = end.getTime();
+                buttonSelectDates.setText(startDate + " to " + endDate);
+                long diffMillis = selectedEndDate - selectedStartDate;
+                long days = TimeUnit.MILLISECONDS.toDays(diffMillis) + 1;
+                textTripLength.setText("Trip length: " + days + " days");
+            }
+        } catch (ParseException e) {
+        }
     }
 
     private void openDateRangePicker() {
-        MaterialDatePicker.Builder<Pair<Long, Long>> builder =
-                MaterialDatePicker.Builder.dateRangePicker();
+        MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select trip dates");
+
+        if (selectedStartDate > 0 && selectedEndDate > 0) {
+            builder.setSelection(new Pair<>(selectedStartDate, selectedEndDate));
+        }
 
         MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
 
         picker.addOnPositiveButtonClickListener(selection -> {
-            if (selection == null) {
-                return;
-            }
-
             Long start = selection.first;
             Long end = selection.second;
-
-            if (start == null || end == null) {
-                return;
-            }
+            if (start == null || end == null) return;
 
             selectedStartDate = start;
             selectedEndDate = end;
@@ -103,13 +143,11 @@ public class AddTripActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String startText = sdf.format(new Date(selectedStartDate));
             String endText = sdf.format(new Date(selectedEndDate));
-            String rangeText = startText + " to " + endText;
-            buttonSelectDates.setText(rangeText);
+            buttonSelectDates.setText(startText + " to " + endText);
 
             long diffMillis = selectedEndDate - selectedStartDate;
             long days = TimeUnit.MILLISECONDS.toDays(diffMillis) + 1;
-            String lengthText = "Trip length: " + days + " days";
-            textTripLength.setText(lengthText);
+            textTripLength.setText("Trip length: " + days + " days");
         });
 
         picker.show(getSupportFragmentManager(), "trip_date_range_picker");
@@ -135,10 +173,23 @@ public class AddTripActivity extends AppCompatActivity {
         String startDateText = sdf.format(new Date(selectedStartDate));
         String endDateText = sdf.format(new Date(selectedEndDate));
 
-        Trip trip = new Trip(name, startDateText, endDateText, notes, budget, travelers);
-        TripRepository.getInstance().addTrip(trip);
+        if (isEditMode && editTripIndex >= 0 && editTripIndex < TripRepository.getInstance().getTrips().size()) {
+            Trip trip = TripRepository.getInstance().getTrips().get(editTripIndex);
+            trip.setName(name);
+            trip.setStartDate(startDateText);
+            trip.setEndDate(endDateText);
+            trip.setNotes(notes);
+            trip.setBudget(budget);
+            trip.setTravelers(travelers);
+            TripRepository.getInstance().saveTrips();
+            Toast.makeText(this, "Trip updated", Toast.LENGTH_SHORT).show();
+        } else {
+            Trip trip = new Trip(name, startDateText, endDateText, notes, budget, travelers);
+            TripRepository.getInstance().addTrip(trip);
+            TripRepository.getInstance().saveTrips();
+            Toast.makeText(this, "Trip saved", Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(this, "Trip saved", Toast.LENGTH_SHORT).show();
         finish();
     }
 }

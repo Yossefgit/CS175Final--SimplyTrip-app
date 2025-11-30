@@ -1,37 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
     android:background="#E4D7FF"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp">
 
-    <TextView
-        android:id="@+id/textTripName"
-        android:text="Trip name"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textTripDates"
-        android:text="Dates"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textTripName"
+            android:text="Trip Name"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textTripExtra"
-        android:text="Budget • Travelers"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp"
+        <TextView
+            android:id="@+id/textTripDates"
+            android:text="Dates"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textTripCountdown"
+            android:text="Starts in X days"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textTripExtra"
+            android:text="Budget • Travelers"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/buttonPin"
+            android:text="Pin"
+            android:textSize="14sp"
+            android:background="#5E35B1"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:text="Delete"
+            android:textSize="14sp"
+            android:background="#B71C1C"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>

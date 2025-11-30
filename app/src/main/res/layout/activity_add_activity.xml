@@ -13,6 +13,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:padding="16dp"
+            android:gravity="top|center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -23,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/buttonBackAddTrip"
+                    android:id="@+id/buttonBackAddActivity"
                     android:background="@android:color/transparent"
                     android:padding="8dp"
                     android:src="@drawable/ic_arrow_back"
@@ -32,9 +33,9 @@
                     android:layout_height="48dp" />
 
                 <TextView
-                    android:id="@+id/textAddTripTitle"
-                    android:text="Add Trip"
-                    android:textSize="34sp"
+                    android:id="@+id/textAddActivityTitle"
+                    android:text="Add Activity"
+                    android:textSize="32sp"
                     android:textStyle="bold"
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
@@ -50,88 +51,44 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Trip name"
+                    android:text="Activity title"
                     android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editTripName"
-                    android:hint="e.g. New York Weekend"
+                    android:id="@+id/editActivityTitle"
+                    android:hint="e.g. Visit the museum"
                     android:textSize="18sp"
                     android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Trip dates"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/buttonSelectDates"
-                    android:text="Select trip dates"
-                    android:textSize="18sp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:layout_marginTop="6dp"
-                    android:backgroundTint="#5E35B1"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/textTripLength"
-                    android:text="Trip length: -"
-                    android:textSize="18sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Budget (optional)"
+                    android:text="Time (optional)"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editBudget"
-                    android:hint="e.g. 800"
-                    android:inputType="numberDecimal"
+                    android:id="@+id/editActivityTime"
+                    android:hint="e.g. 10:00 AM"
                     android:textSize="18sp"
                     android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Number of travelers (optional)"
+                    android:text="Notes (optional)"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editTravelers"
-                    android:hint="e.g. 2"
-                    android:inputType="number"
-                    android:textSize="18sp"
-                    android:layout_marginTop="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Notes"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:id="@+id/editNotes"
-                    android:hint="Packing list, places to visit, etc."
+                    android:id="@+id/editActivityNotes"
+                    android:hint="Details, meeting point, etc."
                     android:textSize="18sp"
                     android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
@@ -146,7 +103,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/buttonCancelTrip"
+                    android:id="@+id/buttonCancelActivity"
                     android:text="Cancel"
                     android:textSize="18sp"
                     android:backgroundTint="#5E35B1"
@@ -157,8 +114,8 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/buttonSaveTrip"
-                    android:text="Save Changes"
+                    android:id="@+id/buttonSaveActivity"
+                    android:text="Save Activity"
                     android:textSize="18sp"
                     android:backgroundTint="#5E35B1"
                     android:textColor="#FFFFFF"

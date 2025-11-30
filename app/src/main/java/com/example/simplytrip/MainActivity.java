@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TripRepository.getInstance().init(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         buttonGetStarted = findViewById(R.id.buttonGetStarted);
