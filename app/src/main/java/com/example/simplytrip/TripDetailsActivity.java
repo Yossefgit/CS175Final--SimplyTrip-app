@@ -3,8 +3,12 @@ package com.example.simplytrip;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,13 +26,19 @@ import java.util.concurrent.TimeUnit;
 
 public class TripDetailsActivity extends AppCompatActivity {
 
+    private static final String MAPS_API_KEY = "AIzaSyCby6cjqCqt8pmLALe0GE87FFw77J4Oxdw";
+
     private ImageButton buttonBackDetails;
     private TextView textDestination;
+    private TextView textLocation;
     private TextView textDates;
     private TextView textLength;
     private TextView textBudget;
     private TextView textTravelers;
+    private TextView textPerPerson;
     private TextView textNotes;
+    private LinearLayout mapCard;
+    private WebView mapWebView;
     private RecyclerView recyclerActivities;
     private Button buttonAddActivity;
     private Button buttonEditTrip;
@@ -42,11 +54,15 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         buttonBackDetails = findViewById(R.id.buttonBackDetails);
         textDestination = findViewById(R.id.textDestination);
+        textLocation = findViewById(R.id.textLocation);
         textDates = findViewById(R.id.textDates);
         textLength = findViewById(R.id.textLength);
         textBudget = findViewById(R.id.textBudget);
         textTravelers = findViewById(R.id.textTravelers);
+        textPerPerson = findViewById(R.id.textPerPerson);
         textNotes = findViewById(R.id.textNotes);
+        mapCard = findViewById(R.id.mapCard);
+        mapWebView = findViewById(R.id.mapWebView);
         recyclerActivities = findViewById(R.id.recyclerActivities);
         buttonAddActivity = findViewById(R.id.buttonAddActivity);
         buttonEditTrip = findViewById(R.id.buttonEditTrip);
@@ -59,7 +75,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
 
         recyclerActivities.setLayoutManager(new LinearLayoutManager(this));
-        activityAdapter = new ActivityAdapter(trip.getActivities());
+        activityAdapter = new ActivityAdapter(trip.getActivities(), tripIndex);
         recyclerActivities.setAdapter(activityAdapter);
 
         buttonBackDetails.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +132,17 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         textDestination.setText(trip.getName());
 
+        String location = trip.getDestination();
+
+        if (location == null || location.trim().isEmpty()) {
+            textLocation.setText("Location: not set");
+            mapCard.setVisibility(View.GONE);
+        } else {
+            textLocation.setText(location);
+            mapCard.setVisibility(View.VISIBLE);
+            loadMapForLocation(location);
+        }
+
         String dateText = trip.getStartDate() + " to " + trip.getEndDate();
         textDates.setText("Dates: " + dateText);
 
@@ -123,16 +150,50 @@ public class TripDetailsActivity extends AppCompatActivity {
         textLength.setText(lengthText);
 
         String budget = trip.getBudget();
-        if (budget == null || budget.isEmpty()) textBudget.setText("Budget: not set");
-        else textBudget.setText("Budget: " + budget);
+        if (budget == null || budget.isEmpty()) {
+            textBudget.setText("Budget: not set");
+        } else {
+            textBudget.setText("Budget: " + budget);
+        }
 
         String travelers = trip.getTravelers();
-        if (travelers == null || travelers.isEmpty()) textTravelers.setText("Travelers: not set");
-        else textTravelers.setText("Travelers: " + travelers);
+        if (travelers == null || travelers.isEmpty()) {
+            textTravelers.setText("Travelers: not set");
+        } else {
+            textTravelers.setText("Travelers: " + travelers);
+        }
+
+        String perPersonText = buildPerPersonText(budget, travelers);
+        textPerPerson.setText(perPersonText);
 
         String notes = trip.getNotes();
-        if (notes == null || notes.isEmpty()) textNotes.setText("No notes added.");
-        else textNotes.setText(notes);
+        if (notes == null || notes.isEmpty()) {
+            textNotes.setText("No notes added.");
+        } else {
+            textNotes.setText(notes);
+        }
+    }
+
+    private void loadMapForLocation(String location) {
+        String encoded;
+        try {
+            encoded = URLEncoder.encode(location, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            encoded = location;
+        }
+
+        String src = "https://www.google.com/maps/embed/v1/place?key="
+                + MAPS_API_KEY + "&q=" + encoded;
+
+        String html = "<html><body style=\"margin:0;padding:0;\">" +
+                "<iframe width=\"100%\" height=\"100%\" frameborder=\"0\" style=\"border:0;\" " +
+                "src=\"" + src + "\" allowfullscreen></iframe>" +
+                "</body></html>";
+
+        WebSettings settings = mapWebView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        mapWebView.setWebViewClient(new WebViewClient());
+        mapWebView.loadDataWithBaseURL("https://www.google.com", html, "text/html", "UTF-8", null);
     }
 
     private String buildLengthText(String startDate, String endDate) {
@@ -146,6 +207,22 @@ public class TripDetailsActivity extends AppCompatActivity {
             return "Trip length: " + days + " days";
         } catch (ParseException e) {
             return "Trip length: unknown";
+        }
+    }
+
+    private String buildPerPersonText(String budget, String travelers) {
+        if (budget == null || budget.isEmpty() || travelers == null || travelers.isEmpty()) {
+            return "Per person: n/a";
+        }
+        try {
+            double total = Double.parseDouble(budget);
+            int count = Integer.parseInt(travelers);
+            if (count <= 0) return "Per person: n/a";
+            double per = total / count;
+            String value = String.format(Locale.getDefault(), "%.2f", per);
+            return "Per person: " + value;
+        } catch (NumberFormatException e) {
+            return "Per person: n/a";
         }
     }
 }

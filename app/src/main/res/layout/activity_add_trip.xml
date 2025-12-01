@@ -50,15 +50,34 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Trip name"
+                    android:text="Trip title"
                     android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/editTripName"
-                    android:hint="e.g. New York Weekend"
+                    android:hint="e.g. Spring Break Roadtrip"
                     android:textSize="18sp"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Destination"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/editDestination"
+                    android:hint="Tap to search with Google Maps"
+                    android:textSize="18sp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:background="@android:drawable/edit_text"
+                    android:backgroundTint="#FFFFFF"
                     android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -91,7 +110,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Budget (optional)"
+                    android:text="Budget"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
@@ -107,7 +126,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Number of travelers (optional)"
+                    android:text="Number of travelers"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
@@ -115,7 +134,7 @@
 
                 <EditText
                     android:id="@+id/editTravelers"
-                    android:hint="e.g. 2"
+                    android:hint="e.g. 4"
                     android:inputType="number"
                     android:textSize="18sp"
                     android:layout_marginTop="6dp"
@@ -158,7 +177,7 @@
 
                 <Button
                     android:id="@+id/buttonSaveTrip"
-                    android:text="Save Changes"
+                    android:text="Save Trip"
                     android:textSize="18sp"
                     android:backgroundTint="#5E35B1"
                     android:textColor="#FFFFFF"

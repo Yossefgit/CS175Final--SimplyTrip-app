@@ -1,37 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:padding="10dp"
     android:background="#E4D7FF"
-    android:padding="16dp"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
 
-    <TextView
-        android:id="@+id/textActivityTitle"
-        android:text="Activity title"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textActivityTime"
-        android:text="Time"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textActivityTitle"
+            android:text="Activity title"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textActivityNotes"
-        android:text="Activity notes"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textActivityTime"
+            android:text="Time"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textActivityNotes"
+            android:text="Notes"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonEditActivity"
+            android:text="Edit"
+            android:textSize="13sp"
+            android:backgroundTint="#5E35B1"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/buttonDeleteActivity"
+            android:text="Delete"
+            android:textSize="13sp"
+            android:backgroundTint="#5E35B1"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>

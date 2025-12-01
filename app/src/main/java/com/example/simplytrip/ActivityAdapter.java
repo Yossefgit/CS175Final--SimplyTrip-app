@@ -1,11 +1,14 @@
 package com.example.simplytrip;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -13,9 +16,11 @@ import java.util.List;
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder> {
 
     private final List<TripActivityItem> activities;
+    private final int tripIndex;
 
-    public ActivityAdapter(List<TripActivityItem> activities) {
+    public ActivityAdapter(List<TripActivityItem> activities, int tripIndex) {
         this.activities = activities;
+        this.tripIndex = tripIndex;
     }
 
     @NonNull
@@ -33,16 +38,28 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         holder.textActivityTitle.setText(item.getTitle());
 
         String time = item.getTime();
-        if (time == null || time.isEmpty()) {
-            holder.textActivityTime.setText("Time: not set");
+        String duration = item.getDuration();
+
+        if ((time == null || time.isEmpty()) && (duration == null || duration.isEmpty())) {
+            holder.textActivityTime.setVisibility(View.GONE);
         } else {
-            holder.textActivityTime.setText("Time: " + time);
+            holder.textActivityTime.setVisibility(View.VISIBLE);
+            if (time == null) time = "";
+            if (duration == null) duration = "";
+            if (!time.isEmpty() && !duration.isEmpty()) {
+                holder.textActivityTime.setText(time + " • " + duration);
+            } else if (!time.isEmpty()) {
+                holder.textActivityTime.setText(time);
+            } else {
+                holder.textActivityTime.setText(duration);
+            }
         }
 
         String notes = item.getNotes();
         if (notes == null || notes.isEmpty()) {
-            holder.textActivityNotes.setText("No notes for this activity.");
+            holder.textActivityNotes.setVisibility(View.GONE);
         } else {
+            holder.textActivityNotes.setVisibility(View.VISIBLE);
             holder.textActivityNotes.setText(notes);
         }
     }
@@ -52,17 +69,56 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         return activities.size();
     }
 
-    static class ActivityViewHolder extends RecyclerView.ViewHolder {
+    class ActivityViewHolder extends RecyclerView.ViewHolder {
 
         TextView textActivityTitle;
         TextView textActivityTime;
         TextView textActivityNotes;
+        Button buttonEditActivity;
+        Button buttonDeleteActivity;
 
         ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
+
             textActivityTitle = itemView.findViewById(R.id.textActivityTitle);
             textActivityTime = itemView.findViewById(R.id.textActivityTime);
             textActivityNotes = itemView.findViewById(R.id.textActivityNotes);
+            buttonEditActivity = itemView.findViewById(R.id.buttonEditActivity);
+            buttonDeleteActivity = itemView.findViewById(R.id.buttonDeleteActivity);
+
+            buttonEditActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos == RecyclerView.NO_POSITION) return;
+
+                    Intent intent = new Intent(itemView.getContext(), AddActivityActivity.class);
+                    intent.putExtra("trip_index", tripIndex);
+                    intent.putExtra("activity_index", pos);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+            buttonDeleteActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos == RecyclerView.NO_POSITION) return;
+
+                    new AlertDialog.Builder(itemView.getContext())
+                            .setTitle("Delete activity")
+                            .setMessage("Are you sure you want to delete this activity?")
+                            .setPositiveButton("Delete", (d, w) -> {
+                                Trip trip = TripRepository.getInstance().getTrips().get(tripIndex);
+                                trip.removeActivity(pos);
+                                TripRepository.getInstance().saveTrips();
+                                notifyItemRemoved(pos);
+                                notifyItemRangeChanged(pos, activities.size());
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
+            });
         }
     }
 }

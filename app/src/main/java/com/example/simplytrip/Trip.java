@@ -13,8 +13,11 @@ public class Trip {
     private String travelers;
     private boolean pinned;
     private List<TripActivityItem> activities;
+    private String destination;
+    private double latitude;
+    private double longitude;
 
-    public Trip(String name, String startDate, String endDate, String notes, String budget, String travelers) {
+    public Trip(String name, String startDate, String endDate, String notes, String budget, String travelers, String destination, double latitude, double longitude) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -23,6 +26,9 @@ public class Trip {
         this.travelers = travelers;
         this.pinned = false;
         this.activities = new ArrayList<>();
+        this.destination = destination;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getName() {
@@ -65,6 +71,10 @@ public class Trip {
         activities.add(activityItem);
     }
 
+    public void removeActivity(int index) {
+        activities.remove(index);
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -87,5 +97,29 @@ public class Trip {
 
     public void setTravelers(String travelers) {
         this.travelers = travelers;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

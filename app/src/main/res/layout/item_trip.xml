@@ -20,10 +20,19 @@
 
         <TextView
             android:id="@+id/textTripName"
-            android:text="Trip Name"
+            android:text="Trip Title"
             android:textStyle="bold"
             android:textSize="22sp"
             android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textTripLocation"
+            android:text="Destination"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -53,7 +62,6 @@
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
 
     <LinearLayout

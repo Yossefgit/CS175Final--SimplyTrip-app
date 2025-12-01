@@ -46,9 +46,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
         Trip trip = trips.get(position);
 
-        if (trip.isPinned()) holder.textTripName.setText(trip.getName() + " 📌");
-        else holder.textTripName.setText(trip.getName());
+        String title = trip.getName();
+        if (trip.isPinned()) title = title + " 📌";
 
+        holder.textTripName.setText(title);
+        holder.textTripLocation.setText(trip.getDestination());
         holder.textTripDates.setText(trip.getStartDate() + " to " + trip.getEndDate());
         holder.textTripCountdown.setText(buildCountdownText(trip.getStartDate()));
 
@@ -105,6 +107,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     class TripViewHolder extends RecyclerView.ViewHolder {
 
         TextView textTripName;
+        TextView textTripLocation;
         TextView textTripDates;
         TextView textTripCountdown;
         TextView textTripExtra;
@@ -115,6 +118,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             super(itemView);
 
             textTripName = itemView.findViewById(R.id.textTripName);
+            textTripLocation = itemView.findViewById(R.id.textTripLocation);
             textTripDates = itemView.findViewById(R.id.textTripDates);
             textTripCountdown = itemView.findViewById(R.id.textTripCountdown);
             textTripExtra = itemView.findViewById(R.id.textTripExtra);
