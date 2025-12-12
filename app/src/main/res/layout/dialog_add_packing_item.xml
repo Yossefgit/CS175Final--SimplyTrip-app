@@ -14,7 +14,6 @@
 
     <EditText
         android:id="@+id/editPackingName"
-        android:hint="e.g. Passport"
         android:textSize="16sp"
         android:background="@android:drawable/edit_text"
         android:backgroundTint="#FFFFFF"
