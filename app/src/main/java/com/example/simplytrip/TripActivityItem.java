@@ -6,12 +6,14 @@ public class TripActivityItem {
     private String time;
     private String notes;
     private String duration;
+    private boolean completed;
 
     public TripActivityItem(String title, String time, String notes, String duration) {
         this.title = title;
         this.time = time;
         this.notes = notes;
         this.duration = duration;
+        this.completed = false;
     }
 
     public String getTitle() {
@@ -30,6 +32,10 @@ public class TripActivityItem {
         return duration;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -44,5 +50,9 @@ public class TripActivityItem {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

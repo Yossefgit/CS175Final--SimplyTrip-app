@@ -16,6 +16,7 @@ public class Trip {
     private String destination;
     private double latitude;
     private double longitude;
+    private List<PackingItem> packingItems;
 
     public Trip(String name, String startDate, String endDate, String notes, String budget, String travelers, String destination, double latitude, double longitude) {
         this.name = name;
@@ -29,6 +30,7 @@ public class Trip {
         this.destination = destination;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.packingItems = new ArrayList<>();
     }
 
     public String getName() {
@@ -121,5 +123,20 @@ public class Trip {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<PackingItem> getPackingItems() {
+        if (packingItems == null) {
+            packingItems = new ArrayList<>();
+        }
+        return packingItems;
+    }
+
+    public void addPackingItem(PackingItem item) {
+        getPackingItems().add(item);
+    }
+
+    public void removePackingItem(int index) {
+        getPackingItems().remove(index);
     }
 }

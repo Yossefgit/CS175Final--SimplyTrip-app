@@ -49,6 +49,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <CheckBox
+            android:id="@+id/checkActivityDone"
+            android:text="Done"
+            android:textSize="13sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/buttonEditActivity"
             android:text="Edit"
@@ -57,6 +64,7 @@
             android:textColor="#FFFFFF"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:layout_marginTop="4dp"
             android:layout_width="68dp"
             android:layout_height="wrap_content" />
 

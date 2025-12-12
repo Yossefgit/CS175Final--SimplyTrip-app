@@ -1,10 +1,12 @@
 package com.example.simplytrip;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,11 +64,39 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             holder.textActivityNotes.setVisibility(View.VISIBLE);
             holder.textActivityNotes.setText(notes);
         }
+
+        holder.checkActivityDone.setOnCheckedChangeListener(null);
+        holder.checkActivityDone.setChecked(item.isCompleted());
+        applyCompletedStyle(holder, item.isCompleted());
+
+        holder.checkActivityDone.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int pos = holder.getAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return;
+            Trip trip = TripRepository.getInstance().getTrips().get(tripIndex);
+            TripActivityItem activityItem = trip.getActivities().get(pos);
+            activityItem.setCompleted(isChecked);
+            TripRepository.getInstance().saveTrips();
+            notifyItemChanged(pos);
+        });
     }
 
     @Override
     public int getItemCount() {
         return activities.size();
+    }
+
+    private void applyCompletedStyle(ActivityViewHolder holder, boolean completed) {
+        if (completed) {
+            holder.textActivityTitle.setPaintFlags(holder.textActivityTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textActivityTitle.setAlpha(0.6f);
+            holder.textActivityTime.setAlpha(0.6f);
+            holder.textActivityNotes.setAlpha(0.6f);
+        } else {
+            holder.textActivityTitle.setPaintFlags(holder.textActivityTitle.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textActivityTitle.setAlpha(1f);
+            holder.textActivityTime.setAlpha(1f);
+            holder.textActivityNotes.setAlpha(1f);
+        }
     }
 
     class ActivityViewHolder extends RecyclerView.ViewHolder {
@@ -76,6 +106,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         TextView textActivityNotes;
         Button buttonEditActivity;
         Button buttonDeleteActivity;
+        CheckBox checkActivityDone;
 
         ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,6 +116,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             textActivityNotes = itemView.findViewById(R.id.textActivityNotes);
             buttonEditActivity = itemView.findViewById(R.id.buttonEditActivity);
             buttonDeleteActivity = itemView.findViewById(R.id.buttonDeleteActivity);
+            checkActivityDone = itemView.findViewById(R.id.checkActivityDone);
 
             buttonEditActivity.setOnClickListener(new View.OnClickListener() {
                 @Override

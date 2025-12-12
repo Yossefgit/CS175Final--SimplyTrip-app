@@ -7,11 +7,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,12 +42,15 @@ public class TripDetailsActivity extends AppCompatActivity {
     private LinearLayout mapCard;
     private WebView mapWebView;
     private RecyclerView recyclerActivities;
+    private RecyclerView recyclerPacking;
     private Button buttonAddActivity;
     private Button buttonEditTrip;
+    private Button buttonAddPackingItem;
 
     private Trip trip;
     private int tripIndex = -1;
     private ActivityAdapter activityAdapter;
+    private PackingAdapter packingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +69,10 @@ public class TripDetailsActivity extends AppCompatActivity {
         mapCard = findViewById(R.id.mapCard);
         mapWebView = findViewById(R.id.mapWebView);
         recyclerActivities = findViewById(R.id.recyclerActivities);
+        recyclerPacking = findViewById(R.id.recyclerPacking);
         buttonAddActivity = findViewById(R.id.buttonAddActivity);
         buttonEditTrip = findViewById(R.id.buttonEditTrip);
+        buttonAddPackingItem = findViewById(R.id.buttonAddPackingItem);
 
         tripIndex = getIntent().getIntExtra("trip_index", -1);
         if (!loadTrip()) {
@@ -77,6 +84,10 @@ public class TripDetailsActivity extends AppCompatActivity {
         recyclerActivities.setLayoutManager(new LinearLayoutManager(this));
         activityAdapter = new ActivityAdapter(trip.getActivities(), tripIndex);
         recyclerActivities.setAdapter(activityAdapter);
+
+        recyclerPacking.setLayoutManager(new LinearLayoutManager(this));
+        packingAdapter = new PackingAdapter(trip.getPackingItems(), tripIndex);
+        recyclerPacking.setAdapter(packingAdapter);
 
         buttonBackDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +114,13 @@ public class TripDetailsActivity extends AppCompatActivity {
             }
         });
 
+        buttonAddPackingItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddPackingItemDialog();
+            }
+        });
+
         bindTripToViews();
     }
 
@@ -116,6 +134,9 @@ public class TripDetailsActivity extends AppCompatActivity {
         bindTripToViews();
         if (activityAdapter != null) {
             activityAdapter.notifyDataSetChanged();
+        }
+        if (packingAdapter != null) {
+            packingAdapter.notifyDataSetChanged();
         }
     }
 
@@ -224,5 +245,28 @@ public class TripDetailsActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             return "Per person: n/a";
         }
+    }
+
+    private void showAddPackingItemDialog() {
+        EditText input = new EditText(this);
+        input.setHint("e.g. Passport");
+
+        new AlertDialog.Builder(this)
+                .setTitle("Add packing item")
+                .setView(input)
+                .setPositiveButton("Add", (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        Toast.makeText(this, "Please enter an item name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    trip.addPackingItem(new PackingItem(name, false));
+                    TripRepository.getInstance().saveTrips();
+                    if (packingAdapter != null) {
+                        packingAdapter.notifyItemInserted(trip.getPackingItems().size() - 1);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

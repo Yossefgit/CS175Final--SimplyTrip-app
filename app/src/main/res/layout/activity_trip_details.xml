@@ -216,6 +216,32 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textPackingHeader"
+                android:text="Packing list"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPacking"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:nestedScrollingEnabled="true" />
+
+            <Button
+                android:id="@+id/buttonAddPackingItem"
+                android:text="Add item"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:background="#5E35B1"
+                android:textColor="#FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
                 android:id="@+id/textActivitiesHeader"
                 android:text="Activities"
                 android:textSize="22sp"
@@ -228,8 +254,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerActivities"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:layout_height="220dp"
+                android:nestedScrollingEnabled="true" />
 
             <Button
                 android:id="@+id/buttonAddActivity"
