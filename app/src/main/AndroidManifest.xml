@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SimplyTrip">
 
         <activity
+            android:name=".BudgetBreakdownActivity" />
+
+        <activity
             android:name=".AddActivityActivity" />
 
         <activity

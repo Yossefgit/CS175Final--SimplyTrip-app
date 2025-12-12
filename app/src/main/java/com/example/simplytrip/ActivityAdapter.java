@@ -70,19 +70,34 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         applyCompletedStyle(holder, item.isCompleted());
 
         holder.checkActivityDone.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            toggleActivityCompleted(holder.getAdapterPosition(), isChecked);
+        });
+
+        holder.itemView.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos == RecyclerView.NO_POSITION) return;
-            Trip trip = TripRepository.getInstance().getTrips().get(tripIndex);
-            TripActivityItem activityItem = trip.getActivities().get(pos);
-            activityItem.setCompleted(isChecked);
-            TripRepository.getInstance().saveTrips();
-            notifyItemChanged(pos);
+
+            TripActivityItem act = activities.get(pos);
+            boolean newState = !act.isCompleted();
+
+            holder.checkActivityDone.setChecked(newState);
+            toggleActivityCompleted(pos, newState);
         });
     }
 
     @Override
     public int getItemCount() {
         return activities.size();
+    }
+
+    private void toggleActivityCompleted(int position, boolean completed) {
+        if (position == RecyclerView.NO_POSITION) return;
+
+        Trip trip = TripRepository.getInstance().getTrips().get(tripIndex);
+        TripActivityItem item = trip.getActivities().get(position);
+        item.setCompleted(completed);
+        TripRepository.getInstance().saveTrips();
+        notifyItemChanged(position);
     }
 
     private void applyCompletedStyle(ActivityViewHolder holder, boolean completed) {

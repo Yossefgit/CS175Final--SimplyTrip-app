@@ -10,14 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
@@ -52,7 +47,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.textTripName.setText(title);
         holder.textTripLocation.setText(trip.getDestination());
         holder.textTripDates.setText(trip.getStartDate() + " to " + trip.getEndDate());
-        holder.textTripCountdown.setText(buildCountdownText(trip.getStartDate()));
 
         String extra = "";
         boolean hasBudget = trip.getBudget() != null && !trip.getBudget().isEmpty();
@@ -74,25 +68,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         return trips.size();
     }
 
-    private String buildCountdownText(String startDateString) {
-        if (startDateString == null || startDateString.isEmpty()) return "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        try {
-            Date startDate = sdf.parse(startDateString);
-            if (startDate == null) return "";
-            Date now = new Date();
-            Date today = sdf.parse(sdf.format(now));
-            if (today == null) return "";
-            long diff = startDate.getTime() - today.getTime();
-            long days = TimeUnit.MILLISECONDS.toDays(diff);
-            if (days > 0) return "Starts in " + days + " days";
-            if (days == 0) return "Starts today";
-            return "Started " + Math.abs(days) + " days ago";
-        } catch (ParseException e) {
-            return "";
-        }
-    }
-
     private void sortTrips() {
         Collections.sort(trips, new Comparator<Trip>() {
             @Override
@@ -109,7 +84,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         TextView textTripName;
         TextView textTripLocation;
         TextView textTripDates;
-        TextView textTripCountdown;
         TextView textTripExtra;
         Button buttonPin;
         Button buttonDelete;
@@ -120,7 +94,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             textTripName = itemView.findViewById(R.id.textTripName);
             textTripLocation = itemView.findViewById(R.id.textTripLocation);
             textTripDates = itemView.findViewById(R.id.textTripDates);
-            textTripCountdown = itemView.findViewById(R.id.textTripCountdown);
             textTripExtra = itemView.findViewById(R.id.textTripExtra);
             buttonPin = itemView.findViewById(R.id.buttonPin);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);

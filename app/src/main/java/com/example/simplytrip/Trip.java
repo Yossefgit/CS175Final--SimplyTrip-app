@@ -17,6 +17,11 @@ public class Trip {
     private double latitude;
     private double longitude;
     private List<PackingItem> packingItems;
+    private String lodgingBudget;
+    private String foodBudget;
+    private String transportBudget;
+    private String activitiesBudget;
+    private String otherBudget;
 
     public Trip(String name, String startDate, String endDate, String notes, String budget, String travelers, String destination, double latitude, double longitude) {
         this.name = name;
@@ -31,6 +36,11 @@ public class Trip {
         this.latitude = latitude;
         this.longitude = longitude;
         this.packingItems = new ArrayList<>();
+        this.lodgingBudget = "";
+        this.foodBudget = "";
+        this.transportBudget = "";
+        this.activitiesBudget = "";
+        this.otherBudget = "";
     }
 
     public String getName() {
@@ -138,5 +148,45 @@ public class Trip {
 
     public void removePackingItem(int index) {
         getPackingItems().remove(index);
+    }
+
+    public String getLodgingBudget() {
+        return lodgingBudget;
+    }
+
+    public void setLodgingBudget(String lodgingBudget) {
+        this.lodgingBudget = lodgingBudget;
+    }
+
+    public String getFoodBudget() {
+        return foodBudget;
+    }
+
+    public void setFoodBudget(String foodBudget) {
+        this.foodBudget = foodBudget;
+    }
+
+    public String getTransportBudget() {
+        return transportBudget;
+    }
+
+    public void setTransportBudget(String transportBudget) {
+        this.transportBudget = transportBudget;
+    }
+
+    public String getActivitiesBudget() {
+        return activitiesBudget;
+    }
+
+    public void setActivitiesBudget(String activitiesBudget) {
+        this.activitiesBudget = activitiesBudget;
+    }
+
+    public String getOtherBudget() {
+        return otherBudget;
+    }
+
+    public void setOtherBudget(String otherBudget) {
+        this.otherBudget = otherBudget;
     }
 }

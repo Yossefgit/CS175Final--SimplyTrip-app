@@ -60,7 +60,6 @@
 
                 <EditText
                     android:id="@+id/editActivityTitle"
-                    android:hint="e.g. Visit the museum"
                     android:textSize="18sp"
                     android:background="@android:drawable/edit_text"
                     android:backgroundTint="#FFFFFF"
@@ -104,7 +103,6 @@
 
                 <EditText
                     android:id="@+id/editActivityNotes"
-                    android:hint="Details, meeting point, etc."
                     android:textSize="18sp"
                     android:background="@android:drawable/edit_text"
                     android:backgroundTint="#FFFFFF"

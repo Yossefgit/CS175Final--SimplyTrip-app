@@ -23,18 +23,16 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/buttonBackAddTrip"
+                    android:id="@+id/buttonBackBudget"
                     android:background="@android:color/transparent"
                     android:padding="8dp"
                     android:src="@drawable/ic_arrow_back"
-                    android:tint="#2B2B2B"
                     android:layout_width="48dp"
                     android:layout_height="48dp" />
 
                 <TextView
-                    android:id="@+id/textAddTripTitle"
-                    android:text="Add Trip"
-                    android:textSize="34sp"
+                    android:text="Budget breakdown"
+                    android:textSize="28sp"
                     android:textStyle="bold"
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
@@ -50,104 +48,108 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Trip title"
+                    android:id="@+id/textTotalBudget"
+                    android:text="Total budget:"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textAllocatedTotal"
+                    android:text="Allocated:"
+                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textRemaining"
+                    android:text="Remaining:"
+                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="#E4D7FF"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Lodging"
                     android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editTripName"
-                    android:textSize="18sp"
-                    android:layout_marginTop="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Destination"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:id="@+id/editDestination"
-                    android:textSize="18sp"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:background="@android:drawable/edit_text"
-                    android:backgroundTint="#FFFFFF"
-                    android:layout_marginTop="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Trip dates"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/buttonSelectDates"
-                    android:text="Select trip dates"
-                    android:textSize="18sp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:layout_marginTop="6dp"
-                    android:backgroundTint="#5E35B1"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/textTripLength"
-                    android:text="Trip length: -"
-                    android:textSize="18sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Budget"
-                    android:textSize="18sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:id="@+id/editBudget"
+                    android:id="@+id/editLodgingBudget"
                     android:inputType="numberDecimal"
                     android:textSize="18sp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Number of travelers"
+                    android:text="Food"
                     android:textSize="18sp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editTravelers"
-                    android:inputType="number"
+                    android:id="@+id/editFoodBudget"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="Notes"
+                    android:text="Transport"
                     android:textSize="18sp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/editNotes"
+                    android:id="@+id/editTransportBudget"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Activities"
+                    android:textSize="18sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/editActivitiesBudget"
+                    android:inputType="numberDecimal"
+                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Other"
+                    android:textSize="18sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/editOtherBudget"
+                    android:inputType="numberDecimal"
+                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -160,7 +162,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/buttonCancelTrip"
+                    android:id="@+id/buttonCancelBudget"
                     android:text="Cancel"
                     android:textSize="18sp"
                     android:backgroundTint="#5E35B1"
@@ -171,8 +173,8 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/buttonSaveTrip"
-                    android:text="Save Trip"
+                    android:id="@+id/buttonSaveBudget"
+                    android:text="Save"
                     android:textSize="18sp"
                     android:backgroundTint="#5E35B1"
                     android:textColor="#FFFFFF"

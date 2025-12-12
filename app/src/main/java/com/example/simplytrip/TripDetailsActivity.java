@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class TripDetailsActivity extends AppCompatActivity {
+public class TripDetailsActivity extends AppCompatActivity implements PackingAdapter.OnPackingChangedListener {
 
     private static final String MAPS_API_KEY = "AIzaSyCby6cjqCqt8pmLALe0GE87FFw77J4Oxdw";
 
@@ -35,6 +36,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private TextView textLocation;
     private TextView textDates;
     private TextView textLength;
+    private TextView textCountdown;
     private TextView textBudget;
     private TextView textTravelers;
     private TextView textPerPerson;
@@ -46,6 +48,9 @@ public class TripDetailsActivity extends AppCompatActivity {
     private Button buttonAddActivity;
     private Button buttonEditTrip;
     private Button buttonAddPackingItem;
+    private Button buttonBudgetBreakdown;
+    private TextView textPackingProgress;
+    private ProgressBar progressPacking;
 
     private Trip trip;
     private int tripIndex = -1;
@@ -62,6 +67,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         textLocation = findViewById(R.id.textLocation);
         textDates = findViewById(R.id.textDates);
         textLength = findViewById(R.id.textLength);
+        textCountdown = findViewById(R.id.textCountdown);
         textBudget = findViewById(R.id.textBudget);
         textTravelers = findViewById(R.id.textTravelers);
         textPerPerson = findViewById(R.id.textPerPerson);
@@ -73,6 +79,9 @@ public class TripDetailsActivity extends AppCompatActivity {
         buttonAddActivity = findViewById(R.id.buttonAddActivity);
         buttonEditTrip = findViewById(R.id.buttonEditTrip);
         buttonAddPackingItem = findViewById(R.id.buttonAddPackingItem);
+        buttonBudgetBreakdown = findViewById(R.id.buttonBudgetBreakdown);
+        textPackingProgress = findViewById(R.id.textPackingProgress);
+        progressPacking = findViewById(R.id.progressPacking);
 
         tripIndex = getIntent().getIntExtra("trip_index", -1);
         if (!loadTrip()) {
@@ -86,7 +95,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         recyclerActivities.setAdapter(activityAdapter);
 
         recyclerPacking.setLayoutManager(new LinearLayoutManager(this));
-        packingAdapter = new PackingAdapter(trip.getPackingItems(), tripIndex);
+        packingAdapter = new PackingAdapter(trip.getPackingItems(), tripIndex, this);
         recyclerPacking.setAdapter(packingAdapter);
 
         buttonBackDetails.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +130,17 @@ public class TripDetailsActivity extends AppCompatActivity {
             }
         });
 
+        buttonBudgetBreakdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TripDetailsActivity.this, BudgetBreakdownActivity.class);
+                intent.putExtra("trip_index", tripIndex);
+                startActivity(intent);
+            }
+        });
+
         bindTripToViews();
+        updatePackingProgress();
     }
 
     @Override
@@ -138,6 +157,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         if (packingAdapter != null) {
             packingAdapter.notifyDataSetChanged();
         }
+        updatePackingProgress();
     }
 
     private boolean loadTrip() {
@@ -169,6 +189,9 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         String lengthText = buildLengthText(trip.getStartDate(), trip.getEndDate());
         textLength.setText(lengthText);
+
+        String countdownText = buildCountdownText(trip.getStartDate());
+        textCountdown.setText(countdownText);
 
         String budget = trip.getBudget();
         if (budget == null || budget.isEmpty()) {
@@ -247,26 +270,75 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private String buildCountdownText(String startDateString) {
+        if (startDateString == null || startDateString.isEmpty()) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date startDate = sdf.parse(startDateString);
+            if (startDate == null) return "";
+            Date now = new Date();
+            Date today = sdf.parse(sdf.format(now));
+            if (today == null) return "";
+            long diff = startDate.getTime() - today.getTime();
+            long days = TimeUnit.MILLISECONDS.toDays(diff);
+            if (days > 0) return "Starts in " + days + " days";
+            if (days == 0) return "Starts today";
+            return "Started " + Math.abs(days) + " days ago";
+        } catch (ParseException e) {
+            return "";
+        }
+    }
+
     private void showAddPackingItemDialog() {
-        EditText input = new EditText(this);
-        input.setHint("e.g. Passport");
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_packing_item, null);
+        EditText editName = dialogView.findViewById(R.id.editPackingName);
+        android.widget.Spinner spinnerCategory = dialogView.findViewById(R.id.spinnerPackingCategory);
+
+        String[] categories = new String[]{"General", "Clothes", "Toiletries", "Electronics", "Documents"};
+        android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
 
         new AlertDialog.Builder(this)
                 .setTitle("Add packing item")
-                .setView(input)
+                .setView(dialogView)
                 .setPositiveButton("Add", (dialog, which) -> {
-                    String name = input.getText().toString().trim();
+                    String name = editName.getText().toString().trim();
                     if (name.isEmpty()) {
                         Toast.makeText(this, "Please enter an item name", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    trip.addPackingItem(new PackingItem(name, false));
+                    String category = spinnerCategory.getSelectedItem().toString();
+                    trip.addPackingItem(new PackingItem(name, false, category));
                     TripRepository.getInstance().saveTrips();
                     if (packingAdapter != null) {
                         packingAdapter.notifyItemInserted(trip.getPackingItems().size() - 1);
                     }
+                    updatePackingProgress();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private void updatePackingProgress() {
+        if (trip == null) return;
+        int total = trip.getPackingItems().size();
+        if (total == 0) {
+            textPackingProgress.setText("Packed: 0/0");
+            progressPacking.setProgress(0);
+            return;
+        }
+        int packedCount = 0;
+        for (PackingItem item : trip.getPackingItems()) {
+            if (item.isPacked()) packedCount++;
+        }
+        textPackingProgress.setText("Packed: " + packedCount + "/" + total);
+        int percent = (int) ((packedCount * 100f) / total);
+        progressPacking.setProgress(percent);
+    }
+
+    @Override
+    public void onPackingChanged() {
+        updatePackingProgress();
     }
 }
