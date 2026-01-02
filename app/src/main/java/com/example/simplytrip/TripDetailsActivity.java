@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TripDetailsActivity extends AppCompatActivity implements PackingAdapter.OnPackingChangedListener {
 
-    private static final String MAPS_API_KEY = "AIzaSyCby6cjqCqt8pmLALe0GE87FFw77J4Oxdw";
+    private static final String MAPS_API_KEY = "put your own";
 
     private ImageButton buttonBackDetails;
     private TextView textDestination;
